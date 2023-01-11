@@ -41,18 +41,7 @@ if  [ $option = "y" ] ; then
         sudo mkdir +x /var/www/html/magento2
     fi
     sudo rm /etc/apache2/sites-available/000-default.conf
-    sudo touch /etc/apache2/sites-available/000-default.conf
-    sudo chmod +x /etc/apache2/sites-available/000-default.conf
-    sudo echo -e "
-    <VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-        ServerName magento2
-        ServerAlias www.magento2
-        DocumentRoot /var/www/html/magento2
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-    </VirtualHost>
-    " >>/etc/apache2/sites-available/000-default.conf
+    sudo mv  data/servername/000-default.conf /etc/apache2/sites-available/000-default.conf
     cat /etc/apache2/sites-available/000-default.conf
     sudo echo "ServerName 127.0.1.1" >>  /etc/apache2/apache2.conf
     sudo a2ensite 000-default.conf
