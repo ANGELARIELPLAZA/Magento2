@@ -2,7 +2,7 @@
 # Programa para instalar  apache
 #sudo apt -y update
 #sudo apt -y upgrade
-sudo apt -y install shfmt
+ sudo apt -y install shfmt
 #sudo rm /var/lib/dpkg/lock
 #sudo rm /var/lib/apt/lists/lock
 #sudo rm /var/cache/apt/archives/lock
@@ -40,8 +40,19 @@ if  [ $option = "y" ] ; then
         echo "No, no existe /var/www/html/magento2 - se acaba de crear"
         sudo mkdir +x /var/www/html/magento2
     fi
-    sudo rm /etc/apache2/sites-available/000-default.conf
-    sudo mv  data/servername/000-default.conf /etc/apache2/sites-available/000-default.conf
+    sudo rm /etc/apache2/sites-available/000-default.conf 
+    sudo touch /etc/apache2/sites-available/000-default.conf
+    sudo chmod +x /etc/apache2/sites-available/000-default.conf
+    sudo echo -e "
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        ServerName magento2
+        ServerAlias www.magento2
+        DocumentRoot /var/www/html/magento2
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+    </VirtualHost>
+    " >>/etc/apache2/sites-available/000-default.conf
     cat /etc/apache2/sites-available/000-default.conf
     sudo echo "ServerName 127.0.1.1" >>  /etc/apache2/apache2.conf
     sudo a2ensite 000-default.conf
@@ -59,7 +70,14 @@ if  [ $option = "y" ] ; then
     sudo apt -y install  php7.4-cli php7.4-json php7.4-common php7.4-mysql php7.4-zip php7.4-gd php7.4-mbstring php7.4-curl php7.4-xml php7.4-bcmath
     php -v
     sudo rm /etc/apache2/mods-enabled/dir.conf
-    sudo mv data/dir.conf /etc/apache2/mods-enabled/
+    sudo touch /etc/apache2/mods-enabled/dir.conf
+    sudo chmod +x /etc/apache2/mods-enabled/dir.conf
+    sudo echo -e "
+    <IfModule mod_dir.c>
+    DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm
+    </IfModule>
+    # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+    " >>/etc/apache2/mods-enabled/dir.conf
     sudo a2enmod rewrite
     sudo apt -y install  php7.4-bcmath php7.4-intl php7.4-soap php7.4-zip php7.4-gd php7.4-json php7.4-curl php7.4-cli php7.4-xml php7.4-xmlrpc php7.4-gmp php7.4-common
     sudo systemctl reload apache2
@@ -75,9 +93,26 @@ if  [ $option = "y" ] ; then
     sudo apt -y install  elasticsearch=7.9.3
     sudo a2enmod proxy && sudo a2enmod proxy_http && sudo service apache2 restart
     sudo rm /etc/apache2/ports.conf
-    sudo mv data/ports.conf /etc/apache2/ports.conf
-    sudo rm /etc/apache2/sites-available/000-default.conf
-    sudo mv data/000-default.conf /etc/apache2/sites-available/000-default.conf
+    sudo touch /etc/apache2/ports.conf
+    sudo chmod +x /etc/apache2/ports.conf
+    sudo echo -e "
+    # If you just change the port or add more ports here, you will likely also
+    # have to change the VirtualHost statement in
+    # /etc/apache2/sites-enabled/000-default.conf
+    Listen 80
+    Listen 8080
+    <IfModule ssl_module>
+        Listen 443
+    </IfModule>
+    <IfModule mod_gnutls.c>
+        Listen 443
+    </IfModule>
+    # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+    " >>/etc/apache2/ports.conf
+    sudo echo '<VirtualHost *:8080>
+    ProxyPass "/" "http://localhost:9200/"
+    ProxyPassReverse "/" "http://localhost:9200/"
+    </VirtualHost> ' >>   /etc/apache2/sites-available/000-default.conf
     sudo a2ensite 000-default.conf
     sudo service apache2 restart
     sudo systemctl start elasticsearch
@@ -117,7 +152,21 @@ if  [ $option = "y" ] ; then
     --elasticsearch-host=localhost \
     --elasticsearch-port=8080
     sudo rm /etc/apache2/sites-available/000-default.conf
-    sudo mv  data/servername/000-default.conf /etc/apache2/sites-available/000-default.conf
+    sudo touch /etc/apache2/sites-available/000-default.conf
+    sudo chmod +x /etc/apache2/sites-available/000-default.conf
+    sudo echo -e "
+    <VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        ServerName magento2
+        ServerAlias www.magento2
+        DocumentRoot /var/www/html/magento2/pub
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        <Directory "/var/www/html/magento2">
+                    AllowOverride all
+        </Directory>
+    </VirtualHost>
+    " >>/etc/apache2/sites-available/000-default.conf
     cat /etc/apache2/sites-available/000-default.conf
     sudo a2ensite 000-default.conf
     sudo apache2ctl configtest
