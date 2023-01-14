@@ -10,15 +10,12 @@ echo "Apache Web Server"
 echo "sudo systemctl status apache2"
 echo "Use your browser access by link: 	http://your_server_ip"
 echo "Setting Up Virtual Hosts for Website Domain"
-echo "First, we need to create a directory containing the code. For example, it is possible to create a directory in /var/www/your-domain with the command below:"
-sudo mkdir /var/www/magento2
-echo "You can then upload the source code to this directory via FTP or SFTP."
-sudo nano /var/www/magento2/index.html
-echo "And add your code in the index.html file."
-sudo nano /etc/apache2/sites-available/magento2.conf
-echo "And copy the content below into magento2.conf file:"
 cd  data/servername
-sudo mkdir -p /var/www/html/
+echo "First, we need to create a directory containing the code. For example, it is possible to create a directory in /var/www/your-domain with the command below:"
+sudo mkdir -p /var/www/magento2
+echo "You can then upload the source code to this directory via FTP or SFTP."
+sudo cp  /var/www/magento2/index.html
+echo "And copy the content below into magento2.conf file:"
 sudo cp magento2.conf /etc/apache2/sites-available/
 cd ..
 cd ..
