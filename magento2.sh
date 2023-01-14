@@ -1,7 +1,7 @@
 cd /var/www/html
 sudo rm -r magento2
 echo "Public Key: 5ca1a03744903052195b60547722eb27  private Key: 49ecc02e687ac219e7e38ff2c097201f"
-sudo cp auth.json  /root/.config/composer/
+#sudo cp auth.json  /root/.config/composer/
 sudo composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition magento2
 cd /var/www/html/magento2
 sudo find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +
