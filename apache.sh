@@ -14,15 +14,18 @@ cd  data/servername
 echo "First, we need to create a directory containing the code. For example, it is possible to create a directory in /var/www/your-domain with the command below:"
 sudo mkdir -p /var/www/html/magento2
 echo "You can then upload the source code to this directory via FTP or SFTP."
+cd data/servername
 sudo cp index.html  /var/www/html/magento2/index.html
 echo "And copy the content below into magento2.conf file:"
-sudo cp magento2.conf /etc/apache2/sites-available/
+sudo cp 000-default.conf /etc/apache2/sites-available/
 sudo echo "ServerName 127.0.1.1" >>/etc/apache2/apache2.conf
 cd ..
 cd ..
-echo "Then execute the command below to activate the virtual host just configured."
+echo"Then execute the command below to activate the virtual host just configured."
 sudo a2ensite magento2.conf
 echo "Test for configuration errors."
 sudo apache2ctl configtest
 echo "Finally, Restart apache to make the changes."
 sudo systemctl restart apache2
+echo "reload apache2"
+sudo systemctl reload apache2
