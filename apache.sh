@@ -22,7 +22,7 @@ sudo echo "ServerName 127.0.1.1" >>/etc/apache2/apache2.conf
 cd ..
 cd ..
 echo"Then execute the command below to activate the virtual host just configured."
-sudo a2ensite magento2.conf
+sudo a2ensite 000-default.conf
 echo "Test for configuration errors."
 sudo apache2ctl configtest
 echo "Finally, Restart apache to make the changes."
