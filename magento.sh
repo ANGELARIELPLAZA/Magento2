@@ -173,6 +173,7 @@ if  [ $option = "y" ] ; then
     sudo systemctl restart apache2
     sudo mysql -u magento2 -p'admin1234' -e "use magento2; UPDATE core_config_data SET value='http://192.168.0.37' WHERE path='web/unsecure/base_url';"
     sudo php /var/www/html/magento2/bin/magento deploy:mode:set developer
+                                                deploy:mode:set developer
     sudo php /var/www/html/magento2/bin/magento cache:flush
     sudo chmod -R 777 /var/www/html/magento2/var
     sudo chmod -R 777 /var/www/html/magento2/pub/static
