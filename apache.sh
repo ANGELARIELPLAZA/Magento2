@@ -14,7 +14,6 @@ cd  data/servername
 echo "First, we need to create a directory containing the code. For example, it is possible to create a directory in /var/www/your-domain with the command below:"
 sudo mkdir -p /var/www/html/magento2
 echo "You can then upload the source code to this directory via FTP or SFTP."
-cd data/servername
 sudo cp index.html  /var/www/html/magento2/index.html
 echo "And copy the content below into magento2.conf file:"
 sudo cp 000-default.conf /etc/apache2/sites-available/
