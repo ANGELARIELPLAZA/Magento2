@@ -9,9 +9,26 @@ sudo find var generated vendor pub/static pub/media app/etc -type d -exec chmod 
 sudo chown -R :www-data .
 sudo chmod u+x bin/magento
 cd /var/www/html/magento2
-sudo php bin/magento setup:install \ --base-url=http://192.168.0.22 \ --db-host=localhost \ --db-name=magento2 \ --db-user=magento2 \ --db-password=admin1234 \ --admin-firstname=Admin \ --admin-lastname=Admin \ --admin-email=admin@admin.com \ --admin-user=admin \ --admin-password=admin1234 \ --language=en_US \ --currency=USD \ --timezone=America/Chicago \ --use-rewrites=1 \ --search-engine=elasticsearch7 \ --elasticsearch-host=localhost \ --elasticsearch-port=8080 
+sudo php bin/magento setup:install \
+--base-url=http://192.168.0.22 \
+--db-host=localhost \
+--db-name=magento2 \
+--db-user=magento2 \
+--db-password=admin1234 \
+--admin-firstname=Admin \
+--admin-lastname=Admin \
+--admin-email=admin@admin.com \
+--admin-user=admin \
+--admin-password=admin1234 \
+--language=en_US \
+--currency=USD \
+--timezone=America/Chicago \
+--use-rewrites=1 \
+--search-engine=elasticsearch7 \
+--elasticsearch-host=localhost \
+--elasticsearch-port=8080
 cd 
-cd Magento2/data/sites-available
+cd data/sites-available
 sudo cp 000-default.conf /etc/apache2/sites-available/
 sudo systemctl restart apache2
 sudo apache2ctl configtest
@@ -22,6 +39,7 @@ sudo php bin/magento deploy:mode:set developer
 sudo php /var/www/html/magento2/bin/magento cache:flush
 sudo chmod -R 777 /var/www/html/magento2/var
 sudo chmod -R 777 /var/www/html/magento2/pub/static
+sudo chmod -R 777 var pub generated
 sudo chmod -R 777 /var/www/html/magento2/generated
 sudo chmod -R 777 /var/www/html/magento2/generated/
 sudo php bin/magento s:up
