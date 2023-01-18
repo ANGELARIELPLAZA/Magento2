@@ -1,5 +1,6 @@
 sudo apt -y update
 sudo su -
+sudo apt install git
 #Instalacion de apache 
 sudo sh apache.sh
 sudo sh mysql.sh
